@@ -1,0 +1,213 @@
+// Generated schema — modeled after beautyhqio conventions.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(ANALYST)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  ANALYST
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actorName String?
+  action    String
+  entity    String
+  entityId  String?
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model JobRole {
+  id        String   @id @default(cuid())
+  title String
+  department String
+  level String
+  headcount Int
+  avgSalary Float
+  status String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  taskInventorys TaskInventory[]
+  automationAssessments AutomationAssessment[]
+  reskillingPlans ReskillingPlan[]
+  transitionPaths TransitionPath[]
+  productivityTargets ProductivityTarget[]
+  displacementForecasts DisplacementForecast[]
+  employees Employee[]
+  skillGaps SkillGap[]
+  scenarios Scenario[]
+  governanceActions GovernanceAction[]
+  learningResources LearningResource[]
+}
+
+model TaskInventory {
+  id        String   @id @default(cuid())
+  name String
+  frequency String
+  hoursPerWeek Float
+  classification String
+  evidence String
+  automationConfidence Float
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AutomationAssessment {
+  id        String   @id @default(cuid())
+  taskRef String
+  tooling String
+  feasibility String
+  estimatedSavings Float
+  risk String
+  status String
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReskillingPlan {
+  id        String   @id @default(cuid())
+  employeeRef String
+  targetRole String
+  curriculum String
+  status String
+  startDate DateTime?
+  targetComplete DateTime?
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TransitionPath {
+  id        String   @id @default(cuid())
+  fromRole String
+  toRole String
+  gapSkills String
+  status String
+  durationWeeks Int
+  successRate Float
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductivityTarget {
+  id        String   @id @default(cuid())
+  metric String
+  baselineValue Float
+  targetValue Float
+  period String
+  status String
+  sponsor String
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DisplacementForecast {
+  id        String   @id @default(cuid())
+  horizon String
+  exposurePct Float
+  affectedFte Int
+  mitigation String
+  status String
+  modeledAt DateTime?
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Employee {
+  id        String   @id @default(cuid())
+  name String
+  employeeId String
+  roleTitle String
+  manager String
+  hiredAt DateTime?
+  status String
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SkillGap {
+  id        String   @id @default(cuid())
+  skill String
+  currentLevel String
+  requiredLevel String
+  trainingRef String
+  status String
+  gapScore Float
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Scenario {
+  id        String   @id @default(cuid())
+  name String
+  assumptions String
+  headcountDelta Float
+  costDelta Float
+  decision String
+  status String
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GovernanceAction {
+  id        String   @id @default(cuid())
+  action String
+  owner String
+  kind String
+  status String
+  dueDate DateTime?
+  notes String?
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LearningResource {
+  id        String   @id @default(cuid())
+  title String
+  provider String
+  durationHours Int
+  cost String
+  skillTag String
+  format String
+  roleId String?
+  role JobRole? @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
