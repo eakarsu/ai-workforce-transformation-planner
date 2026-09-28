@@ -1,0 +1,540 @@
+{
+  "JobRole": {
+    "name": "JobRole",
+    "fields": [
+      {
+        "name": "title",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "department",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "level",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "headcount",
+        "kind": "number",
+        "required": true,
+        "integer": true,
+        "min": 0
+      },
+      {
+        "name": "avgSalary",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      }
+    ]
+  },
+  "TaskInventory": {
+    "name": "TaskInventory",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "frequency",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "hoursPerWeek",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "classification",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "evidence",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "automationConfidence",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "AutomationAssessment": {
+    "name": "AutomationAssessment",
+    "fields": [
+      {
+        "name": "taskRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "tooling",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "feasibility",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "estimatedSavings",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "risk",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "ReskillingPlan": {
+    "name": "ReskillingPlan",
+    "fields": [
+      {
+        "name": "employeeRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "targetRole",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "curriculum",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "startDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "targetComplete",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "TransitionPath": {
+    "name": "TransitionPath",
+    "fields": [
+      {
+        "name": "fromRole",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "toRole",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "gapSkills",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "durationWeeks",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "successRate",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "ProductivityTarget": {
+    "name": "ProductivityTarget",
+    "fields": [
+      {
+        "name": "metric",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "baselineValue",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "targetValue",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "period",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "sponsor",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "DisplacementForecast": {
+    "name": "DisplacementForecast",
+    "fields": [
+      {
+        "name": "horizon",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "exposurePct",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "affectedFte",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "mitigation",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "modeledAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "Employee": {
+    "name": "Employee",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "employeeId",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleTitle",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "manager",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "hiredAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "SkillGap": {
+    "name": "SkillGap",
+    "fields": [
+      {
+        "name": "skill",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "currentLevel",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "requiredLevel",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "trainingRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "gapScore",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "Scenario": {
+    "name": "Scenario",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "assumptions",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "headcountDelta",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "costDelta",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "decision",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "GovernanceAction": {
+    "name": "GovernanceAction",
+    "fields": [
+      {
+        "name": "action",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "owner",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "kind",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dueDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "notes",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  },
+  "LearningResource": {
+    "name": "LearningResource",
+    "fields": [
+      {
+        "name": "title",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "provider",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "durationHours",
+        "kind": "number",
+        "required": true,
+        "integer": true,
+        "min": 0
+      },
+      {
+        "name": "cost",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "skillTag",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "format",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "roleId",
+        "kind": "string",
+        "required": false,
+        "relation": "JobRole"
+      }
+    ],
+    "parent": {
+      "field": "roleId",
+      "entity": "JobRole"
+    }
+  }
+}

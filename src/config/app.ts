@@ -124,21 +124,21 @@ export const entities: Record<string, EntityConfig> = {
 export const workflows: WorkflowConfig[] = [
   {
     slug: "task-classify",
-    title: "Task Classifier",
+    title: "Draft: Task Classifier",
     description: "Classify a task: automate, AI-assisted, human-only.",
     prompt: "You are a workforce-transformation analyst. Classify the task as automate, ai-assisted, or human-only. Justify with skills required, risk, and example tooling.",
     fields: ["task", "frequency", "systemsUsed", "judgmentRequired"],
   },
   {
     slug: "exposure-forecast",
-    title: "Exposure Forecaster",
+    title: "Draft: Exposure Forecaster",
     description: "Forecast role displacement exposure.",
-    prompt: "You are a workforce economist. Forecast the role's 3-year displacement exposure from task mix and AI trends; propose redeployment options.",
+    prompt: "Draft workforce scenarios from explicit task classifications, horizon and assumptions. Do not present a calibrated displacement probability or predict individual job loss.",
     fields: ["role", "taskMix", "headcount", "industryTrend"],
   },
   {
     slug: "plan-generate",
-    title: "Reskilling Plan Generator",
+    title: "Draft: Reskilling Plan Generator",
     description: "Generate a reskilling plan for an employee.",
     prompt: "You are an L&D architect. Produce a reskilling plan: target role, skill gaps, curriculum sequence, milestones, readiness checkpoints.",
     fields: ["currentRole", "targetRole", "existingSkills", "timeBudgetHours"],

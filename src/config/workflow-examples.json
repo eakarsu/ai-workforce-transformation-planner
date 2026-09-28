@@ -1,0 +1,98 @@
+{
+  "task-classify": [
+    {
+      "id": "example-1",
+      "label": "Invoice triage",
+      "values": {
+        "task": "Match invoice lines to purchase orders",
+        "frequency": "200 invoices per week",
+        "systemsUsed": "Example ERP and document queue",
+        "judgmentRequired": "Routine matching with human review for exceptions and posting."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Complex complaint",
+      "values": {
+        "task": "Resolve a disputed service complaint",
+        "frequency": "15 cases per week",
+        "systemsUsed": "Example CRM and call notes",
+        "judgmentRequired": "High contextual judgment; policy interpretation and customer communication."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Inventory reconciliation",
+      "values": {
+        "task": "Reconcile stock-count differences",
+        "frequency": "Weekly across three sample locations",
+        "systemsUsed": "Example WMS and spreadsheet exports",
+        "judgmentRequired": "Moderate judgment for damaged stock and source discrepancies."
+      }
+    }
+  ],
+  "exposure-forecast": [
+    {
+      "id": "example-1",
+      "label": "Finance operations",
+      "values": {
+        "role": "Accounts payable specialist",
+        "taskMix": "60% matching, 25% exception handling, 15% vendor communication",
+        "headcount": "40",
+        "industryTrend": "Illustrative automation scenario; no calibrated displacement forecast."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Customer support",
+      "values": {
+        "role": "Customer support associate",
+        "taskMix": "45% FAQ triage, 35% complex cases, 20% follow-up",
+        "headcount": "120",
+        "industryTrend": "AI-assisted drafting adoption; productivity impact not causally measured."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Field maintenance",
+      "values": {
+        "role": "Field maintenance technician",
+        "taskMix": "70% physical work, 20% diagnosis, 10% documentation",
+        "headcount": "65",
+        "industryTrend": "Documentation assistance scenario; hiring and demand uncertainty remain."
+      }
+    }
+  ],
+  "plan-generate": [
+    {
+      "id": "example-1",
+      "label": "Analyst transition",
+      "values": {
+        "currentRole": "Accounts payable specialist",
+        "targetRole": "Finance operations analyst",
+        "existingSkills": "Spreadsheet analysis, reconciliations, vendor communication",
+        "timeBudgetHours": "80 hours over ten weeks"
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Support specialist",
+      "values": {
+        "currentRole": "Customer support associate",
+        "targetRole": "Customer success specialist",
+        "existingSkills": "Case triage, communication, CRM",
+        "timeBudgetHours": "60 hours over twelve weeks"
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Operations lead",
+      "values": {
+        "currentRole": "Warehouse coordinator",
+        "targetRole": "Operations improvement analyst",
+        "existingSkills": "Scheduling, inventory control, process documentation",
+        "timeBudgetHours": "100 hours over twenty weeks"
+      }
+    }
+  ]
+}

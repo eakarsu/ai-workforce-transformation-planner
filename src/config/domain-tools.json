@@ -1,0 +1,55 @@
+[
+  {
+    "id": "task-exposure",
+    "title": "Task exposure mix",
+    "description": "Weight declared automation classifications by task hours; supports automate, ai-assisted, and human-only.",
+    "example": {
+      "tasks": [
+        {
+          "task": "Prepare report",
+          "hours": 10,
+          "classification": "ai-assisted"
+        },
+        {
+          "task": "Review client decision",
+          "hours": 5,
+          "classification": "human-only"
+        }
+      ]
+    }
+  },
+  {
+    "id": "workforce-scenario",
+    "title": "Headcount and redeployment costs",
+    "description": "Compare explicit attrition, employee cost, training and severance assumptions. No displacement forecast is inferred.",
+    "example": {
+      "headcount": 100,
+      "years": 3,
+      "annualAttritionPercent": 10,
+      "annualCostCents": 10000000,
+      "redeployCount": 10,
+      "trainingCents": 500000,
+      "severanceCents": 1000000
+    }
+  },
+  {
+    "id": "learning-plan",
+    "title": "Learning milestone schedule",
+    "description": "Schedule ordered modules against weekly capacity and attach explicit readiness checkpoints.",
+    "example": {
+      "hoursPerWeek": 5,
+      "modules": [
+        {
+          "title": "Foundations",
+          "hours": 10,
+          "checkpoint": "Complete reviewed assignment"
+        },
+        {
+          "title": "Practice",
+          "hours": 5,
+          "checkpoint": "Meet rubric threshold"
+        }
+      ]
+    }
+  }
+]
