@@ -4,7 +4,8 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { authorize } from "@/lib/api-auth";
 import { recordMetadata, validateRecord, objectBody, RequestError } from "@/lib/record-policy";
-import { records, validateRelations, errorResponse } from "@/lib/record-store";
+import { records, validateRelations, errorResponse, type Row } from "@/lib/record-store";
+import { toCsv, csvResponse } from "@/lib/csv";
 export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ entity: string }> };
 
@@ -25,6 +26,11 @@ export async function GET(request: NextRequest, context: Context) {
       client.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: (page - 1) * pageSize, take: pageSize }) as Prisma.PrismaPromise<unknown>,
       client.count({ where }) as Prisma.PrismaPromise<unknown>,
     ]);
+    if ((params.get("format") || "").toLowerCase() === "csv") {
+      const columns = ["id", ...recordMetadata[entity].fields.map(f => f.name)];
+      const flat = (rows as Row[]).map(row => Object.fromEntries(columns.map(col => [col, row[col] instanceof Date ? row[col].toISOString() : row[col] ?? ""]))) as Record<string, unknown>[];
+      return csvResponse(`${entity}-records.csv`, toCsv(flat as Record<string, unknown>[], columns));
+    }
     return Response.json({ rows, total, page, pageSize });
   } catch (error) { return errorResponse(error); }
 }

@@ -9,6 +9,7 @@ import { objectBody, RequestError, validateAiInput } from "@/lib/record-policy";
 import { errorResponse, jsonValue } from "@/lib/record-store";
 import { loadEvidence, parseModelResult } from "@/lib/ai-evidence";
 import { callOpenRouter, OPENROUTER_MODELS, DEFAULT_OPENROUTER_MODEL } from "@/lib/openrouter";
+import { fallbackAnalysis } from "@/lib/ai-fallback";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest, context: { params: Promise<{ workflow: string }> }) {
@@ -19,7 +20,6 @@ export async function POST(request: NextRequest, context: { params: Promise<{ wo
     if (!config) throw new RequestError("Unknown workflow", 404);
     const body = objectBody(await readJson(request));
     const input = validateAiInput(body.input, config.fields);
-    if (!process.env.OPENROUTER_API_KEY) throw new RequestError("AI is unavailable: configure the provider before running analysis. No assessment has been made.", 503);
     const evidence = await prisma.$transaction(tx => loadEvidence(tx, body.scope, body.evidence), { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead });
     if (workflow === "pr-draft") {
       const specifications = evidence.rows.filter(row => row.entity === "Specification");
@@ -37,6 +37,15 @@ export async function POST(request: NextRequest, context: { params: Promise<{ wo
     if (approvedSourceWorkflow && (!artifacts.length || artifacts.some(a => !a.approvedBy))) throw new RequestError("Select approved source artifacts before drafting or auditing claims");
     if (evidence.text.length + JSON.stringify(artifacts).length > 120000) throw new RequestError("Selected records and source text exceed the context limit. Select fewer sources.", 413);
     evidence.hash = createHash("sha256").update(JSON.stringify({records:evidence.rows,artifacts})).digest("hex");
+    if (!process.env.OPENROUTER_API_KEY) {
+      const result = fallbackAnalysis(workflow, input as Record<string, unknown>, evidence.rows);
+      const stored = await prisma.$transaction(async tx => {
+        const analysis = await tx.workflowAnalysis.create({ data: { actorId: user.id, workflow, subjectEntity: evidence.scope.entity, subjectId: evidence.scope.id, input: jsonValue(input), evidence: jsonValue({ records: evidence.rows, artifacts }), evidenceHash: evidence.hash, result: jsonValue(result), model: "deterministic-fallback", receipt: null } });
+        await tx.auditLog.create({ data: { actorId: user.id, actorName: user.name, action: "AI_DRAFT_CREATED", entity: "WorkflowAnalysis", entityId: analysis.id, detail: JSON.stringify({ workflow, evidenceHash: evidence.hash, evidenceCount: evidence.count, model: "deterministic-fallback", receipt: null }) } });
+        return analysis;
+      });
+      return Response.json({ result: { ...result, id: stored.id, model: stored.model, contextRows: evidence.count, evidenceHash: evidence.hash, createdAt: stored.createdAt } });
+    }
     // Atomically enforce a shared, restart-safe hourly per-user budget.
     const bucket = `${user.id}:${new Date().toISOString().slice(0, 13)}`;
     await prisma.$transaction(async tx => {

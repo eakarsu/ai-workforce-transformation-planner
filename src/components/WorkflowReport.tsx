@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 
 export type WorkflowAnalysis = {
   id?: string;
+  aiGenerated?: boolean;
+  source?: string;
   summary: string;
   findings: string[];
   recommendations: string[];
@@ -46,7 +48,7 @@ export default function WorkflowReport({ result, title, actions }: {
   }
   return <article aria-label={`${title} report`} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
     <header className="border-b border-slate-200 bg-slate-50 p-5">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">OpenRouter report</p>
+      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{result.aiGenerated === false ? "Deterministic fallback — not AI-generated" : "OpenRouter report"}</p>
       <h3 className="mt-1 text-xl font-semibold text-slate-900">{title}</h3>
       <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-slate-700">{result.summary}</p>
     </header>

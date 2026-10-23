@@ -16,6 +16,10 @@ if [ ! -d node_modules ]; then
 fi
 
 if [ -n "${DATABASE_URL:-}" ]; then
+  if [ -z "${NEXTAUTH_SECRET:-}" ] || [ "${#NEXTAUTH_SECRET}" -lt 32 ]; then
+    echo "NEXTAUTH_SECRET must be set to at least 32 characters. Copy .env.example to .env and set a real secret." >&2
+    exit 1
+  fi
   npx prisma migrate deploy
 else
   echo "DATABASE_URL is not set. Copy .env.example to .env first." >&2

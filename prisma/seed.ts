@@ -14,8 +14,11 @@ function daysAgo(i: number, spread = 180): Date { return new Date(Date.now() - (
 async function main() {
   const database = new URL(process.env.DATABASE_URL || "").pathname.slice(1);
   if (process.env.NODE_ENV === "production" || process.env.ALLOW_DEMO_SEED !== "true" || !/^(demo_|inspection_test_)/.test(database)) throw new Error("Demo seeding requires ALLOW_DEMO_SEED=true and a dedicated demo_ or inspection_test_ database");
-  if (!process.env.DEMO_PASSWORD || process.env.DEMO_PASSWORD.length < 16) throw new Error("Set DEMO_PASSWORD to at least 16 characters");
-  const passwordHash = await bcrypt.hash(process.env.DEMO_PASSWORD!, 12);
+  const seedPassword = process.env.SEED_ADMIN_PASSWORD;
+  if (!seedPassword || seedPassword.length < 12) {
+    throw new Error("Set SEED_ADMIN_PASSWORD (12+ chars) in .env before seeding. There is no default password.");
+  }
+  const passwordHash = await bcrypt.hash(seedPassword, 12);
   const demoUsers: Array<[string, string, Role]> = [
     ["admin@ai-workforce-transformation-planner.local", "Demo Admin", "ADMIN"],
     ["manager@ai-workforce-transformation-planner.local", "Demo Manager", "MANAGER"],
